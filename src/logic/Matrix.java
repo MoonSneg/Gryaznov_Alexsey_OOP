@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.Scanner;
+
 public class Matrix {
     private int[][] data;
     private int row;
@@ -24,7 +26,20 @@ public class Matrix {
         }
     }
 
-    public Matrix(int n,  int[] nums) {
+    public Matrix(Scanner scanner) {
+        System.out.print("Введите размерность матрицы: ");
+        int n = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Введите элементы массива через пробел: ");
+        String line = scanner.nextLine();
+        String[] parts = line.trim().split("\\s+");
+
+        int[] nums = new int[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            nums[i] = Integer.parseInt(parts[i]);
+        }
+
         int left = 0, right = n - 1, top = 0, bottom = n - 1;
         int cnt = 0;
         int[][] matrix = new int[n][n];
@@ -79,7 +94,7 @@ public class Matrix {
     }
 
     public void print(){
-        System.out.println("Матрица: ");
+        System.out.println("\nМатрица: ");
         for(int i = 0;i < this.row;i++){
             for (int j=0;j < this.col;j++) {
                 System.out.print(this.data[i][j] + " ");
