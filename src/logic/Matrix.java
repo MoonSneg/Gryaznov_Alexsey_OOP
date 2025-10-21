@@ -13,71 +13,82 @@ public class Matrix {
         this.col = 0;
     }
 
-    public Matrix(int[][] inpMatrix) {
-        if (inpMatrix == null){
-            this.data = new int[0][0];
-            this.row = 0;
-            this.col = 0;
+
+
+    public Matrix(Scanner scanner, boolean spiral) {
+        if(spiral){
+            System.out.print("Введите размерность матрицы: ");
+            int n = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Введите элементы массива через пробел: ");
+            String line = scanner.nextLine();
+            String[] parts = line.trim().split("\\s+");
+
+            int[] nums = new int[parts.length];
+            for (int i = 0; i < parts.length; i++) {
+                nums[i] = Integer.parseInt(parts[i]);
+            }
+
+            int left = 0, right = n - 1, top = 0, bottom = n - 1;
+            int cnt = 0;
+            int[][] matrix = new int[n][n];
+
+            while (left <= right && top <= bottom) {
+                // Заполнение сверху вниз
+                for (int i = top; i <= bottom; i++) {
+                    matrix[i][left] = (cnt < nums.length) ? nums[cnt] : 0;
+                    if (cnt < nums.length) cnt++;
+                }
+                left++;
+                // Заполенине слева направо
+                for (int i = left; i <= right; i++) {
+                    matrix[bottom][i] = (cnt < nums.length) ? nums[cnt] : 0;
+                    if (cnt < nums.length) cnt++;
+                }
+                bottom--;
+                // заполнение снизу вверх
+                if (top <= bottom) {
+                    for (int i = bottom; i >= top; i--) {
+                        matrix[i][right] = (cnt < nums.length) ? nums[cnt] : 0;
+                        if (cnt < nums.length) cnt++;
+                    }
+                    right--;
+                }
+                // заполнение справа налево
+                if (left <= right) {
+                    for (int i = right; i >= left; i--) {
+                        matrix[top][i] = (cnt < nums.length) ? nums[cnt] : 0;
+                        if (cnt < nums.length) cnt++;
+                    }
+                    top++;
+                }
+            }
+            this.data = matrix;
+            this.row = n;
+            this.col = n;
         }
         else {
-            this.data = inpMatrix;
-            this.row = inpMatrix.length;
-            this.col = inpMatrix[0].length;
-        }
-    }
-
-    public Matrix(Scanner scanner) {
-        System.out.print("Введите размерность матрицы: ");
-        int n = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Введите элементы массива через пробел: ");
-        String line = scanner.nextLine();
-        String[] parts = line.trim().split("\\s+");
-
-        int[] nums = new int[parts.length];
-        for (int i = 0; i < parts.length; i++) {
-            nums[i] = Integer.parseInt(parts[i]);
-        }
-
-        int left = 0, right = n - 1, top = 0, bottom = n - 1;
-        int cnt = 0;
-        int[][] matrix = new int[n][n];
-
-        while (left <= right && top <= bottom) {
-            // Заполнение сверху вниз
-            for (int i = top; i <= bottom; i++) {
-                matrix[i][left] = (cnt < nums.length) ? nums[cnt] : 0;
-                if (cnt < nums.length) cnt++;
-            }
-            left++;
-            // Заполенине слева направо
-            for (int i = left; i <= right; i++) {
-                matrix[bottom][i] = (cnt < nums.length) ? nums[cnt] : 0;
-                if (cnt < nums.length) cnt++;
-            }
-            bottom--;
-            // заполнение снизу вверх
-            if (top <= bottom) {
-                for (int i = bottom; i >= top; i--) {
-                    matrix[i][right] = (cnt < nums.length) ? nums[cnt] : 0;
-                    if (cnt < nums.length) cnt++;
+            System.out.print("Введите кол-во строк: ");
+            int iRow = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("Введите кол-во столбцов: ");
+            int iCol = scanner.nextInt();
+            
+            int[][] matrix = new int[iRow][iCol];
+            
+            System.out.println("Введите элементы матрицы построчно:");
+            for (int i = 0; i < iRow; i++) {
+                System.out.print("Строка " + (i + 1) + ": ");
+                for (int j = 0; j < iCol; j++) {
+                    matrix[i][j] = scanner.nextInt();
                 }
-                right--;
             }
-            // заполнение справа налево
-            if (left <= right) {
-                for (int i = right; i >= left; i--) {
-                    matrix[top][i] = (cnt < nums.length) ? nums[cnt] : 0;
-                    if (cnt < nums.length) cnt++;
-                }
-                top++;
-            }
+            
+            this.data = matrix;
+            this.row = iRow;
+            this.col = iCol;
         }
-        this.data = matrix;
-        this.row = n;
-        this.col = n;
-
     }
 
     public void setMatrix(int[][] inpMatrix){
